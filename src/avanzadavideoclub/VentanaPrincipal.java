@@ -8,6 +8,7 @@ package avanzadavideoclub;
 //import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,6 +17,9 @@ import javafx.scene.layout.VBox;
 //import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -34,6 +38,7 @@ public class VentanaPrincipal extends BorderPane{
     }
     
     public void Componentes(){
+
         VBox botones = new VBox(30);
         
         
@@ -45,19 +50,7 @@ public class VentanaPrincipal extends BorderPane{
         btnPrestamo = new Button("Prestamo");
         //this.setCenter(btnPrestamo);
         btnCerrar = new Button("Cerrar");
-        
-        /*
-        lo quehace este medotoesta abriendoun pane sin nada
-        //CLIENTES////////estome abre una nuevaventana en clientes
-        Button btnClientes =  new  Button ("Clientes"); 
-        btnClientes.setOnAction ( new  EventHandler < ActionEvent >()  { 
-         @Override 
-         public  void handle ( ActionEvent e )  { 
-         Stage stage =  new  Stage (); 
-         stage.setTitle("titulo");
-         Parent AchorPane = new AnchorPane();
-         stage.setScene(new Scene(AchorPane,600,400));
-         stage.show(); */
+
        
         //ES METODO VA A ENTRAR A LA CLASE DE CLIENTES
         btnClientes.setOnAction(new EventHandler<ActionEvent>(){
@@ -114,6 +107,16 @@ public class VentanaPrincipal extends BorderPane{
         );
         
         botones.getChildren().addAll(btnClientes,btnPeliculas,btnGenero,btnPrestamo,btnCerrar);
+        List<Button> listaBotones = new ArrayList<>();
+        listaBotones.add(btnClientes);
+        listaBotones.add(btnPeliculas);
+        listaBotones.add(btnGenero);
+        listaBotones.add(btnPrestamo);
+        listaBotones.add(btnCerrar);
+        listaBotones.forEach(boton -> {
+            VBox.setMargin(boton, new Insets(10, 10, 10, 10));
+        });
+
         this.setLeft(botones);
         
     }    

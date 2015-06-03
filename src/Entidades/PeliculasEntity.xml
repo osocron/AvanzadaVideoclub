@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+        <entity class="Entidades.PeliculasEntity">
+                <table name="peliculas" schema="" catalog="videoClub"/>
+                <attributes>
+                        <id name="codigo">
+                                <column name="codigo" nullable="false" precision="10"/>
+                        </id>
+                        <basic name="titulo">
+                                <column name="titulo" nullable="false" length="120"/>
+                        </basic>
+                        <basic name="anio">
+                                <column name="anio" nullable="false" precision="10"/>
+                        </basic>
+                        <basic name="duracion">
+                                <column name="duracion" nullable="false" length="10"/>
+                        </basic>
+                        <basic name="sinopsis">
+                                <column name="sinopsis" length="500"/>
+                        </basic>
+                        <basic name="genero">
+                                <column name="genero" nullable="false" length="50"/>
+                        </basic>
+                        <basic name="actores">
+                                <column name="actores" nullable="false" length="500"/>
+                        </basic>
+                        <basic name="director">
+                                <column name="director" nullable="false" length="120"/>
+                        </basic>
+                </attributes>
+        </entity>
+</entity-mappings>
