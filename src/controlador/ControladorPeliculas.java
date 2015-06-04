@@ -107,7 +107,10 @@ public class ControladorPeliculas{
     public static void eliminarPelicula(int codigo){
         PeliculasEntity pelicula = getPeliculaPorCodigo(codigo);
         if(pelicula != null){
+            EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+            entityTransaction.begin();
             ConexionBD.getEm().remove(pelicula);
+            entityTransaction.commit();
         }
     }
 
