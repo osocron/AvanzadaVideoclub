@@ -9,6 +9,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "peliculas", schema = "", catalog = "videoClub")
 public class PeliculasEntity {
+
     private int codigo;
     private String titulo;
     private Date anio;
@@ -20,7 +21,7 @@ public class PeliculasEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codigo", nullable = false, insertable = true, updatable = true)
+    @Column(name = "codigo")
     public int getCodigo() {
         return codigo;
     }
