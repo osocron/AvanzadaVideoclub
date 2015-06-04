@@ -78,12 +78,6 @@ public class InicioSesion extends Application{
        primaryStage.show();
        
     }
-    
-    
-    
-    
-    
-    
    
     
 }

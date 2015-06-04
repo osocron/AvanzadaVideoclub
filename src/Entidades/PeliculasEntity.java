@@ -19,6 +19,7 @@ public class PeliculasEntity {
     private String director;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo", nullable = false, insertable = true, updatable = true)
     public int getCodigo() {
         return codigo;
