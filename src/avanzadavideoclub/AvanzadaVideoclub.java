@@ -102,7 +102,9 @@ public class AvanzadaVideoclub extends Application{
                  children(new Text("Tus datos son correctos"), new Button("Ok.")).
                 alignment(Pos.CENTER).padding(new Insets(5)).build()));
                 dialogStage.show();
+               primaryStage.close();
              //
+               dialogStage.close();
                Stage stage =  new  Stage (); 
                stage.setTitle("Nuestro VideoClub");
                VentanaPrincipal root = new VentanaPrincipal();
@@ -132,11 +134,8 @@ public class AvanzadaVideoclub extends Application{
        primaryStage.setScene(scene);
        
        primaryStage.show();
-       
-       
-       
+
     }
-    
 
 
     public static void main(String[] args) {

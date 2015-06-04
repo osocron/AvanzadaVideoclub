@@ -72,9 +72,8 @@ public class VentanaPrincipal extends BorderPane{
                 Stage stage = new Stage();
                 stage.setTitle("Nuestras Peliculas");
                 Peliculas root = new Peliculas();
-                stage.setScene(new Scene(root,600,400));
+                stage.setScene(new Scene(root,1200,500));
                 stage.show();
-                
             }
         }
         );

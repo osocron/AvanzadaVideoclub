@@ -8,16 +8,15 @@ import controlador.ControladorPeliculas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.sql.Date;
@@ -41,6 +40,9 @@ public class Peliculas extends BorderPane{
 
     private Text textocodigo;
     private TextField tfcodigo;
+    private Button nuevoButton;
+    private Button eliminarButton;
+    private HBox hBox;
     private ObservableList<PeliculasEntity> data = FXCollections.observableArrayList();;
     private TableView miTabla;
     private ControladorPeliculas controladorPeliculas;
@@ -61,15 +63,23 @@ public class Peliculas extends BorderPane{
         codigo= new TableColumn("Codigo");
         titulo= new TableColumn("Titulo");
         año=new TableColumn("Año");
+        año.setPrefWidth(150);
         minDuracion = new TableColumn("Duración(Min)");
         sinopsis = new TableColumn("Sinopsis");
+        sinopsis.setPrefWidth(300);
         genero= new TableColumn("Genero");
         actores = new TableColumn("Actores");
         director = new TableColumn("Director");
-        
+
+        nuevoButton = new Button("Agregar Pelicula");
+        eliminarButton = new Button("Eliminar");
+        hBox = new HBox();
+        hBox.getChildren().addAll(eliminarButton,nuevoButton);
+        hBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+
         miTabla.getColumns().addAll(codigo,titulo,año,minDuracion,sinopsis,genero,actores,director);
         this.setCenter(miTabla);
-
+        this.setBottom(hBox);
     }
 
     public void setPeliculasALaTabla(){
@@ -89,7 +99,7 @@ public class Peliculas extends BorderPane{
         miTabla.setRowFactory(tv -> {
             TableRow row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2) {
+                if (event.getClickCount() == 5) {
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
                     java.util.Date parsed = null;
                     try {
@@ -125,7 +135,7 @@ public class Peliculas extends BorderPane{
                 }
         );
         año.setCellValueFactory(
-                new PropertyValueFactory<PeliculasEntity, java.sql.Date>("anio")
+                new PropertyValueFactory<DatePickerCell, java.sql.Date>("anio")
         );
         StringConverter<java.sql.Date> stringConverter = new StringConverter<java.sql.Date>() {
             @Override
@@ -153,7 +163,10 @@ public class Peliculas extends BorderPane{
                 return sql;
             }
         };
-        año.setCellFactory(TextFieldTableCell.forTableColumn(stringConverter));
+        año.setCellFactory(param -> {
+            DatePickerCell datePickerCell = new DatePickerCell(data);
+            return datePickerCell;
+        });
         año.setOnEditCommit(
                 new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, Date>>() {
                     @Override
