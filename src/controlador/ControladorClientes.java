@@ -1,7 +1,6 @@
 package controlador;
 
-import Entidades.ClientesEntity;
-import Entidades.PeliculasEntity;
+import entidades.ClientesEntity;
 
 import javax.persistence.EntityTransaction;
 import java.util.List;

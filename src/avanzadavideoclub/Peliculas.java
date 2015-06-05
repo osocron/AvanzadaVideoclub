@@ -1,7 +1,7 @@
 
 package avanzadavideoclub;
 
-import Entidades.PeliculasEntity;
+import entidades.PeliculasEntity;
 import controlador.ControladorPeliculas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,7 +41,7 @@ public class Peliculas extends BorderPane{
     private HBox hBox1;
     private HBox hBox2;
     private HBox hBox;
-    private ObservableList<PeliculasEntity> data = FXCollections.observableArrayList();;
+    private ObservableList<PeliculasEntity> data = FXCollections.observableArrayList();
     private TableView<PeliculasEntity> miTabla;
     private ControladorPeliculas controladorPeliculas;
 

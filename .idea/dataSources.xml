@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1354866199">
+  <component name="DataSourceManagerImpl" format="xml" hash="3056266681">
     <data-source source="LOCAL" name="MySQL - videoClub@localhost" uuid="b23e5298-9e83-4b53-8f09-466240938227">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>

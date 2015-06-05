@@ -1,6 +1,6 @@
 package avanzadavideoclub;
 
-import Entidades.PeliculasEntity;
+import entidades.PeliculasEntity;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
