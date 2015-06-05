@@ -1,6 +1,6 @@
 package controlador;
 
-import Entidades.PeliculasEntity;
+import entidades.PeliculasEntity;
 import avanzadavideoclub.Peliculas;
 
 import javax.persistence.EntityTransaction;

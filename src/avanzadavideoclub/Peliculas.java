@@ -1,7 +1,7 @@
 
 package avanzadavideoclub;
 
-import Entidades.PeliculasEntity;
+import entidades.PeliculasEntity;
 import controlador.ControladorPeliculas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,7 +46,7 @@ public class Peliculas extends BorderPane{
     private HBox hBox1;
     private HBox hBox2;
     private HBox hBox;
-    private ObservableList<PeliculasEntity> data = FXCollections.observableArrayList();;
+    private ObservableList<PeliculasEntity> data = FXCollections.observableArrayList();
     private TableView<PeliculasEntity> miTabla;
     private ControladorPeliculas controladorPeliculas;
 
@@ -125,28 +125,6 @@ public class Peliculas extends BorderPane{
         listaColumnas.add(director);
         listaColumnas.forEach(columna -> {
             columna.setCellFactory(TextFieldTableCell.forTableColumn());
-        });
-
-        miTabla.setRowFactory(tv -> {
-            TableRow row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 5) {
-                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-                    java.util.Date parsed = null;
-                    try {
-                        parsed = df.parse("12/12/2014");
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    java.sql.Date sql = new java.sql.Date(parsed.getTime());
-                    PeliculasEntity pelicula =
-                            ControladorPeliculas.crearPelicula("Nueva Pelicula", sql, "00:00", "Desconocido",
-                                    "Desconocido", "Desconocidos", "Desconocido");
-                    ControladorPeliculas.guardarPelicula(pelicula);
-                    data.add(pelicula);
-                }
-            });
-            return row;
         });
 
         codigo.setCellValueFactory(
@@ -289,7 +267,8 @@ public class Peliculas extends BorderPane{
             }
             java.sql.Date sql = new java.sql.Date(parsed.getTime());
             PeliculasEntity pelicula =
-                    ControladorPeliculas.crearPelicula("", sql, "", "", "", "", "");
+                    ControladorPeliculas.crearPelicula("Nueva Pelicula", sql, "00:00", "Desconocido",
+                            "Desconocido", "Desconocidos", "Desconocido");
             ControladorPeliculas.guardarPelicula(pelicula);
             data.add(pelicula);
             miTabla.setItems(data);
@@ -302,7 +281,7 @@ public class Peliculas extends BorderPane{
         });
     }
 
-    private void setPropiedadesDeBusqueda(){
+    private void setPropiedadesDeBusqueda() {
         busqPelisTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             buscarPeliculas(oldValue, newValue);
         });

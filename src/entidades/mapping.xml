@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+        <entity class="entidades.RPeliculaCopiaEntity">
+                <table name="RPeliculaCopia" schema="" catalog="videoClub"/>
+                <attributes>
+                        <id name="numCopia">
+                                <column name="numCopia" nullable="false" precision="10"/>
+                        </id>
+                        <basic name="rentada">
+                                <column name="rentada" nullable="false" precision="10"/>
+                        </basic>
+                        <basic name="fechaRenta">
+                                <column name="fechaRenta" precision="10"/>
+                        </basic>
+                        <basic name="fechaEntrega">
+                                <column name="fechaEntrega" precision="10"/>
+                        </basic>
+                        <many-to-one name="clientesByNumCliente" optional="true"
+                                     target-entity="entidades.ClientesEntity">
+                                <join-column name="numCliente" referenced-column-name="numCliente"/>
+                        </many-to-one>
+                        <many-to-one name="peliculasByCodigoPelicula" optional="true"
+                                     target-entity="entidades.PeliculasEntity">
+                                <join-column name="codigoPelicula" nullable="false" referenced-column-name="codigo"/>
+                        </many-to-one>
+                </attributes>
+        </entity>
+        <entity class="entidades.ClientesEntity">
+                <table name="clientes" schema="" catalog="videoClub"/>
+                <attributes>
+                        <id name="numCliente">
+                                <column name="numCliente" nullable="false" precision="10"/>
+                        </id>
+                        <basic name="nombres">
+                                <column name="nombres" nullable="false" length="45"/>
+                        </basic>
+                        <basic name="apellidos">
+                                <column name="apellidos" nullable="false" length="80"/>
+                        </basic>
+                        <basic name="direccion">
+                                <column name="direccion" nullable="false" length="120"/>
+                        </basic>
+                        <basic name="telefono">
+                                <column name="telefono" nullable="false" length="45"/>
+                        </basic>
+                        <basic name="correo">
+                                <column name="correo" nullable="false" length="45"/>
+                        </basic>
+                        <basic name="ifEocr">
+                                <column name="IFEocr" nullable="false" precision="19"/>
+                        </basic>
+                </attributes>
+        </entity>
+        <entity class="entidades.PeliculasEntity">
+                <table name="peliculas" schema="" catalog="videoClub"/>
+                <attributes>
+                        <id name="codigo">
+                                <column name="codigo" nullable="false" precision="10"/>
+                        </id>
+                        <basic name="titulo">
+                                <column name="titulo" nullable="false" length="120"/>
+                        </basic>
+                        <basic name="anio">
+                                <column name="anio" nullable="false" precision="10"/>
+                        </basic>
+                        <basic name="duracion">
+                                <column name="duracion" nullable="false" length="10"/>
+                        </basic>
+                        <basic name="sinopsis">
+                                <column name="sinopsis" length="500"/>
+                        </basic>
+                        <basic name="genero">
+                                <column name="genero" nullable="false" length="50"/>
+                        </basic>
+                        <basic name="actores">
+                                <column name="actores" nullable="false" length="500"/>
+                        </basic>
+                        <basic name="director">
+                                <column name="director" nullable="false" length="120"/>
+                        </basic>
+                </attributes>
+        </entity>
+</entity-mappings>

@@ -1,7 +1,6 @@
 package controlador;
 
-import Entidades.ClientesEntity;
-import Entidades.PeliculasEntity;
+import entidades.ClientesEntity;
 
 import javax.persistence.EntityTransaction;
 import java.util.List;
@@ -28,6 +27,14 @@ public class ControladorClientes {
     public static ClientesEntity crearCliente(String nombres, String apellidos, String direccion, String telefono,
                                               String correo, Long ifeOcr){
         ClientesEntity cliente = new ClientesEntity();
+        final int[] codigo = new int[1];
+        List<ClientesEntity> clientes = getClientes();
+        clientes.forEach(peli -> {
+            codigo[0] = peli.getNumCliente();
+        });
+        codigo[0] = codigo[0] + 1;
+        codigo[0] = codigo[0];
+        cliente.setNumCliente(codigo[0]);
         cliente.setNombres(nombres);
         cliente.setApellidos(apellidos);
         cliente.setDireccion(direccion);
@@ -38,11 +45,61 @@ public class ControladorClientes {
         return cliente;
     }
 
+    public static void modificarNombre(int id, String nombre){
+        ClientesEntity pelicula = getClientePorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        pelicula.setNombres(nombre);
+        entityTransaction.commit();
+    }
+
+    public static void modificarApellidos(int id, String apellidos){
+        ClientesEntity pelicula = getClientePorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        pelicula.setApellidos(apellidos);
+        entityTransaction.commit();
+    }
+
+    public static void modificarDireccion(int id, String direccion){
+        ClientesEntity pelicula = getClientePorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        pelicula.setDireccion(direccion);
+        entityTransaction.commit();
+    }
+
+    public static void modificarTelefono(int id, String telefono){
+        ClientesEntity pelicula = getClientePorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        pelicula.setTelefono(telefono);
+        entityTransaction.commit();
+    }
+
+    public static void modificarEmail(int id, String email){
+        ClientesEntity pelicula = getClientePorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        pelicula.setCorreo(email);
+        entityTransaction.commit();
+    }
+
+    public static void modificarIfeOrc(int id, Long ifeOrc){
+        ClientesEntity pelicula = getClientePorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        pelicula.setIfEocr(ifeOrc);
+        entityTransaction.commit();
+    }
 
     public static void eliminarCliente(int codigo){
         ClientesEntity cliente = getClientePorCodigo(codigo);
         if(cliente != null){
+            EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+            entityTransaction.begin();
             ConexionBD.getEm().remove(cliente);
+            entityTransaction.commit();
         }
     }
 

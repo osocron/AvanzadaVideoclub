@@ -1,15 +1,14 @@
-package Entidades;
+package entidades;
 
 import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * Created by osocron on 3/06/15.
+ * Created by osocron on 5/06/15.
  */
 @Entity
 @Table(name = "peliculas", schema = "", catalog = "videoClub")
 public class PeliculasEntity {
-
     private int codigo;
     private String titulo;
     private Date anio;
@@ -20,8 +19,7 @@ public class PeliculasEntity {
     private String director;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codigo")
+    @Column(name = "codigo", nullable = false, insertable = true, updatable = true)
     public int getCodigo() {
         return codigo;
     }

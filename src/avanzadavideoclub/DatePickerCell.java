@@ -1,6 +1,6 @@
 package avanzadavideoclub;
 
-import Entidades.PeliculasEntity;
+import entidades.PeliculasEntity;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -33,12 +33,7 @@ public class DatePickerCell <S, T> extends TableCell<PeliculasEntity, Date> {
         setGraphic(datePicker);
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                datePicker.requestFocus();
-            }
-        });
+        Platform.runLater(() -> datePicker.requestFocus());
     }
 
     @Override
