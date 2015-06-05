@@ -118,6 +118,9 @@ public class Peliculas extends BorderPane{
                 new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
+                        String texto;
+
+
                         ControladorPeliculas.modificarTitulo(event.getTableView().getItems().get(
                                 event.getTablePosition().getRow()
                         ).getCodigo(),event.getNewValue());
