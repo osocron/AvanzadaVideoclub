@@ -6,13 +6,19 @@
     <persistence-unit name="videoClubPU" transaction-type="RESOURCE_LOCAL">
         <mapping-file>Entidades/ClientesEntity.xml</mapping-file>
         <mapping-file>Entidades/PeliculasEntity.xml</mapping-file>
+        <mapping-file>Entidades/RPeliculaCopiasEntity.xml</mapping-file>
         <class>Entidades.ClientesEntity</class>
         <class>Entidades.PeliculasEntity</class>
+        <class>Entidades.RPeliculaCopiaEntity</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/videoClub"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="53curity"/>
+            <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/videoClub"/>
+            <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="eclipselink.jdbc.user" value="root"/>
+            <property name="eclipselink.jdbc.password" value="53curity"/>
         </properties>
     </persistence-unit>
 </persistence>

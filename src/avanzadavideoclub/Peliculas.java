@@ -2,7 +2,6 @@
 package avanzadavideoclub;
 
 import Entidades.PeliculasEntity;
-import com.google.gson.Gson;
 import controlador.ControladorPeliculas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,21 +16,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -286,6 +270,7 @@ public class Peliculas extends BorderPane{
                     ControladorPeliculas.crearPelicula("", sql, "", "", "", "", "");
             ControladorPeliculas.guardarPelicula(pelicula);
             data.add(pelicula);
+            miTabla.setItems(data);
         });
         eliminarButton.setOnMouseClicked(event -> {
             PeliculasEntity pelicula = miTabla.getSelectionModel().getSelectedItem();
