@@ -10,6 +10,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +23,15 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +48,7 @@ public class Peliculas extends BorderPane{
     private TableColumn genero;
     private TableColumn actores;
     private TableColumn director;
+    private TableColumn poster;
 
     private Button nuevoButton;
     private Button eliminarButton;
@@ -76,6 +87,7 @@ public class Peliculas extends BorderPane{
         genero= new TableColumn("Genero");
         actores = new TableColumn("Actores");
         director = new TableColumn("Director");
+        poster = new TableColumn("Poster");
 
         nuevoButton = new Button("Agregar Pelicula");
         eliminarButton = new Button("Eliminar");
@@ -103,7 +115,7 @@ public class Peliculas extends BorderPane{
         hBox.setMargin(hBox1, new Insets(5,5,5,5));
         hBox.setMargin(hBox2, new Insets(5,5,5,5));
 
-        miTabla.getColumns().addAll(codigo,titulo,año,minDuracion,sinopsis,genero,actores,director);
+        miTabla.getColumns().addAll(codigo,titulo,año,minDuracion,sinopsis,genero,actores,director,poster);
 
         this.setCenter(miTabla);
         this.setMargin(miTabla, new Insets(0,5,0,5));
@@ -149,19 +161,19 @@ public class Peliculas extends BorderPane{
         });
 
         codigo.setCellValueFactory(
-                new PropertyValueFactory<PeliculasEntity,String>("codigo")
+                new PropertyValueFactory<PeliculasEntity, String>("codigo")
         );
         titulo.setCellValueFactory(
                 new PropertyValueFactory<PeliculasEntity,String>("titulo")
         );
         titulo.setCellFactory(TextFieldTableCell.forTableColumn());
         titulo.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarTitulo(event.getTableView().getItems().get(
                                 event.getTablePosition().getRow()
-                        ).getCodigo(),event.getNewValue());
+                        ).getCodigo(), event.getNewValue());
                     }
                 }
         );
@@ -188,7 +200,7 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("duracion")
         );
         minDuracion.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarDuracion(event.getTableView().getItems().get(
@@ -201,7 +213,7 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("sinopsis")
         );
         sinopsis.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarSinopsis(event.getTableView().getItems().get(
@@ -214,7 +226,7 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("genero")
         );
         genero.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarGenero(event.getTableView().getItems().get(
@@ -227,7 +239,7 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("actores")
         );
         actores.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarActores(event.getTableView().getItems().get(
@@ -239,7 +251,7 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("director")
         );
         director.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarDirector(event.getTableView().getItems().get(
@@ -248,6 +260,13 @@ public class Peliculas extends BorderPane{
                     }
                 }
         );
+        poster.setCellFactory(
+                new PropertyValueFactory<PeliculasEntity, String>("poster")
+        );
+        poster.setCellFactory(param -> {
+            ButtonCell buttonCell = new ButtonCell(data);
+            return buttonCell;
+        });
 
         miTabla.setItems(data);
 
@@ -311,50 +330,5 @@ public class Peliculas extends BorderPane{
         }
         miTabla.setItems(subentries);
     }
-
-    private void searchGoogle(){
-        String search_string = "nachos";
-        String query = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + search_string;
-
-        //Now do a http GET
-
-        HttpClient client = new DefaultHttpClient();
-        try
-        {
-            HttpGet request = new HttpGet(query);
-
-            HttpResponse http_response = client.execute(request);
-            HttpEntity entity = http_response.getEntity();
-
-            if (entity != null)
-            {
-                InputStream instream = entity.getContent();
-                //convertInputStreamToString does exactly what it says.. its trivial so no need to show the code
-                String response = convertInputStreamToString(instream);
-                //JSONObject is provided at the link above
-                Gson gson = new Gson();
-
-                instream.close();
-            }
-        }
-        catch (Exception ex)
-        {
-            client.getConnectionManager().shutdown();
-        }
-
-
-        //The parseJson function is where you can get the relevant data out of the results.  The list of valid keys are listed in the api documentation I linked above.  Here is the code for parseJson:
-
-        JSONObject response_data = JsonObj.getJSONObject("responseData");
-        JSONArray results = response_data.getJSONArray("results");
-
-        for (int i = 0; i < results.length(); i++)
-        {
-            JSONObject result = (JSONObject)results.get(i);
-            //now you can grab data from the result using:
-            //result.getInt(key);
-            //result.getString(key);
-            //etc
-        }
     
 }

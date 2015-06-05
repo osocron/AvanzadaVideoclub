@@ -19,13 +19,13 @@ import java.util.Calendar;
 public class DatePickerCell <S, T> extends TableCell<PeliculasEntity, Date> {
 
     private DatePicker datePicker;
-    private ObservableList<PeliculasEntity> birthdayData;
+    private ObservableList<PeliculasEntity> datosDePeliculas;
 
-    public DatePickerCell(ObservableList<PeliculasEntity> listBirthdays) {
+    public DatePickerCell(ObservableList<PeliculasEntity> listaPeliculas) {
 
         super();
 
-        this.birthdayData = listBirthdays;
+        this.datosDePeliculas = listaPeliculas;
 
         if (datePicker == null) {
             createDatePicker();
@@ -127,11 +127,11 @@ public class DatePickerCell <S, T> extends TableCell<PeliculasEntity, Date> {
     }
 
     public ObservableList<PeliculasEntity> getPeliculaData() {
-        return birthdayData;
+        return datosDePeliculas;
     }
 
     public void setPeliculaData(ObservableList<PeliculasEntity> pelicaulaData) {
-        this.birthdayData = pelicaulaData;
+        this.datosDePeliculas = pelicaulaData;
     }
 
     public DatePicker getDatePicker() {
