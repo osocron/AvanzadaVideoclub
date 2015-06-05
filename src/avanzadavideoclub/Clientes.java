@@ -179,6 +179,7 @@ public class Clientes extends BorderPane{
                 String texto = event.getNewValue();
                 boolean isTextOnly;
                 Pattern pattern = Pattern.compile("^[A-Z0-9_%+-]+@");
+                //
                 Matcher matcher = pattern.matcher(texto);
                 isTextOnly = matcher.matches();
                 if(!isTextOnly){
