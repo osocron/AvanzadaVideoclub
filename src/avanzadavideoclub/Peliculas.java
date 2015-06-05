@@ -122,28 +122,6 @@ public class Peliculas extends BorderPane{
             columna.setCellFactory(TextFieldTableCell.forTableColumn());
         });
 
-        miTabla.setRowFactory(tv -> {
-            TableRow row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 5) {
-                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-                    java.util.Date parsed = null;
-                    try {
-                        parsed = df.parse("12/12/2014");
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    java.sql.Date sql = new java.sql.Date(parsed.getTime());
-                    PeliculasEntity pelicula =
-                            ControladorPeliculas.crearPelicula("Nueva Pelicula", sql, "00:00", "Desconocido",
-                                    "Desconocido", "Desconocidos", "Desconocido");
-                    ControladorPeliculas.guardarPelicula(pelicula);
-                    data.add(pelicula);
-                }
-            });
-            return row;
-        });
-
         codigo.setCellValueFactory(
                 new PropertyValueFactory<PeliculasEntity, String>("codigo")
         );
@@ -267,7 +245,8 @@ public class Peliculas extends BorderPane{
             }
             java.sql.Date sql = new java.sql.Date(parsed.getTime());
             PeliculasEntity pelicula =
-                    ControladorPeliculas.crearPelicula("", sql, "", "", "", "", "");
+                    ControladorPeliculas.crearPelicula("Nueva Pelicula", sql, "00:00", "Desconocido",
+                            "Desconocido", "Desconocidos", "Desconocido");
             ControladorPeliculas.guardarPelicula(pelicula);
             data.add(pelicula);
             miTabla.setItems(data);
@@ -280,7 +259,7 @@ public class Peliculas extends BorderPane{
         });
     }
 
-    private void setPropiedadesDeBusqueda(){
+    private void setPropiedadesDeBusqueda() {
         busqPelisTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             buscarPeliculas(oldValue, newValue);
         });
