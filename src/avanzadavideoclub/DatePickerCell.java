@@ -33,12 +33,7 @@ public class DatePickerCell <S, T> extends TableCell<PeliculasEntity, Date> {
         setGraphic(datePicker);
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                datePicker.requestFocus();
-            }
-        });
+        Platform.runLater(() -> datePicker.requestFocus());
     }
 
     @Override
