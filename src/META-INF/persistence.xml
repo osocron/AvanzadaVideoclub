@@ -6,8 +6,10 @@
     <persistence-unit name="videoClubPU" transaction-type="RESOURCE_LOCAL">
         <mapping-file>Entidades/ClientesEntity.xml</mapping-file>
         <mapping-file>Entidades/PeliculasEntity.xml</mapping-file>
+        <mapping-file>Entidades/RPeliculaCopiasEntity.xml</mapping-file>
         <class>Entidades.ClientesEntity</class>
         <class>Entidades.PeliculasEntity</class>
+        <class>Entidades.RPeliculaCopiaEntity</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/videoClub"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
