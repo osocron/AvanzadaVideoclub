@@ -29,8 +29,8 @@ public class ControladorClientes {
         ClientesEntity cliente = new ClientesEntity();
         final int[] codigo = new int[1];
         List<ClientesEntity> clientes = getClientes();
-        clientes.forEach(peli -> {
-            codigo[0] = peli.getNumCliente();
+        clientes.forEach(curCliente -> {
+            codigo[0] = curCliente.getNumCliente();
         });
         codigo[0] = codigo[0] + 1;
         codigo[0] = codigo[0];

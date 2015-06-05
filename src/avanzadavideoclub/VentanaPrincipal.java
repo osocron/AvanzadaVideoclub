@@ -90,20 +90,17 @@ public class VentanaPrincipal extends BorderPane{
             }
         }
         );
-        
-        //ESTOVA A MOSTRAR LA CLASE PRESTAMOS
+
         btnPrestamo.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
                 Stage stage = new Stage();
                 stage.setTitle("Prestamos");
-                //Prestamo root = new Prestamo();
-                //stage.setScene(new Sene(root,600,400));
+                Prestamo root = new Prestamo();
+                stage.setScene(new Scene(root,600,400));
                 stage.show();
             }
-        }
-                
-        );
+        });
         
         botones.getChildren().addAll(btnClientes,btnPeliculas,btnGenero,btnPrestamo,btnCerrar);
         List<Button> listaBotones = new ArrayList<>();
