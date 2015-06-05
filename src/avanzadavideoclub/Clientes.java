@@ -5,6 +5,7 @@
  */
 package avanzadavideoclub;
 
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
@@ -13,8 +14,10 @@ public class Clientes extends BorderPane{
     private TableColumn num;
     private TableColumn nombre;
     private TableColumn apellido;
-    private TableColumn email;
+    private TableColumn direccion;
     private TableColumn telefono;
+    private TableColumn email;
+    private TableColumn ifeOrc;
     
     public Clientes(){
         ComponentesCliente();
@@ -26,10 +29,12 @@ public class Clientes extends BorderPane{
         num =new TableColumn("Num.");
         nombre = new TableColumn("Nombre");
         apellido = new TableColumn("Apellido");
-        email = new TableColumn("E-mail");
+        direccion = new TableColumn("Doreccion");
         telefono = new TableColumn("Telefono");
+        email = new TableColumn("E-mail");
+        ifeOrc = new TableColumn("Numero de IFE");
         
-        tablaclientes.getColumns().addAll(num,nombre,apellido,email,telefono);
+        tablaclientes.getColumns().addAll(num,nombre,apellido,direccion,telefono,email,ifeOrc);
         this.setCenter(tablaclientes);
         
     }

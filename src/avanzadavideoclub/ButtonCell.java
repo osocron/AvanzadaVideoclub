@@ -162,7 +162,7 @@ public class ButtonCell extends TableCell<PeliculasEntity, String> {
             image = bufferedImage;
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ImageIO.write((RenderedImage) image, "png", out);
+        ImageIO.write((RenderedImage) image, "jpg", out);
         out.flush();
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         return new javafx.scene.image.Image(in);
