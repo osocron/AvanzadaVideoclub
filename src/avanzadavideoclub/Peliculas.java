@@ -2,6 +2,7 @@
 package avanzadavideoclub;
 
 import Entidades.PeliculasEntity;
+import com.google.gson.Gson;
 import controlador.ControladorPeliculas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +15,13 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.InputStream;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -304,5 +311,50 @@ public class Peliculas extends BorderPane{
         }
         miTabla.setItems(subentries);
     }
+
+    private void searchGoogle(){
+        String search_string = "nachos";
+        String query = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + search_string;
+
+        //Now do a http GET
+
+        HttpClient client = new DefaultHttpClient();
+        try
+        {
+            HttpGet request = new HttpGet(query);
+
+            HttpResponse http_response = client.execute(request);
+            HttpEntity entity = http_response.getEntity();
+
+            if (entity != null)
+            {
+                InputStream instream = entity.getContent();
+                //convertInputStreamToString does exactly what it says.. its trivial so no need to show the code
+                String response = convertInputStreamToString(instream);
+                //JSONObject is provided at the link above
+                Gson gson = new Gson();
+
+                instream.close();
+            }
+        }
+        catch (Exception ex)
+        {
+            client.getConnectionManager().shutdown();
+        }
+
+
+        //The parseJson function is where you can get the relevant data out of the results.  The list of valid keys are listed in the api documentation I linked above.  Here is the code for parseJson:
+
+        JSONObject response_data = JsonObj.getJSONObject("responseData");
+        JSONArray results = response_data.getJSONArray("results");
+
+        for (int i = 0; i < results.length(); i++)
+        {
+            JSONObject result = (JSONObject)results.get(i);
+            //now you can grab data from the result using:
+            //result.getInt(key);
+            //result.getString(key);
+            //etc
+        }
     
 }
