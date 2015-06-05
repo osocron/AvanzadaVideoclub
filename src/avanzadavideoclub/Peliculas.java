@@ -2,30 +2,40 @@
 package avanzadavideoclub;
 
 import Entidades.PeliculasEntity;
-import controlador.ConexionBD;
-import controlador.ControladorClientes;
+import com.google.gson.Gson;
 import controlador.ControladorPeliculas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
+import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
-import javafx.util.StringConverter;
+import javafx.scene.layout.Priority;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.sql.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Peliculas extends BorderPane{
@@ -38,11 +48,17 @@ public class Peliculas extends BorderPane{
     private TableColumn genero;
     private TableColumn actores;
     private TableColumn director;
+    private TableColumn poster;
 
-    private Text textocodigo;
-    private TextField tfcodigo;
+    private Button nuevoButton;
+    private Button eliminarButton;
+    private TextField busqPelisTextField;
+
+    private HBox hBox1;
+    private HBox hBox2;
+    private HBox hBox;
     private ObservableList<PeliculasEntity> data = FXCollections.observableArrayList();;
-    private TableView miTabla;
+    private TableView<PeliculasEntity> miTabla;
     private ControladorPeliculas controladorPeliculas;
 
 
@@ -50,26 +66,62 @@ public class Peliculas extends BorderPane{
       controladorPeliculas = new ControladorPeliculas();
       ComponentesP();
       setPeliculasALaTabla();
-      setTextFieldsYBoton();
+      setPropiedadesDeBotones();
+      setPropiedadesDeBusqueda();
   }
     
     public void ComponentesP(){
-        miTabla = new TableView();
 
+        miTabla = new TableView();
+        busqPelisTextField = new TextField();
+        busqPelisTextField.setPromptText("Buca aquí la pelicula que desees consultar");
         miTabla.setEditable(true);
         
         codigo= new TableColumn("Codigo");
         titulo= new TableColumn("Titulo");
         año=new TableColumn("Año");
+        año.setPrefWidth(150);
         minDuracion = new TableColumn("Duración(Min)");
         sinopsis = new TableColumn("Sinopsis");
+        sinopsis.setPrefWidth(300);
         genero= new TableColumn("Genero");
         actores = new TableColumn("Actores");
         director = new TableColumn("Director");
-        
-        miTabla.getColumns().addAll(codigo,titulo,año,minDuracion,sinopsis,genero,actores,director);
-        this.setCenter(miTabla);
+        poster = new TableColumn("Poster");
 
+        nuevoButton = new Button("Agregar Pelicula");
+        eliminarButton = new Button("Eliminar");
+        hBox1 = new HBox();
+        hBox2 = new HBox();
+        hBox1.getChildren().addAll(eliminarButton);
+        hBox1.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+        hBox1.setHgrow(nuevoButton,Priority.ALWAYS);
+        hBox1.setPrefWidth(USE_COMPUTED_SIZE);
+        hBox1.setPrefHeight(USE_COMPUTED_SIZE);
+
+        hBox2.getChildren().addAll(nuevoButton);
+        hBox2.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        hBox2.setHgrow(nuevoButton,Priority.ALWAYS);
+        hBox2.setPrefWidth(USE_COMPUTED_SIZE);
+        hBox2.setPrefHeight(USE_COMPUTED_SIZE);
+
+        hBox = new HBox();
+        hBox.getChildren().addAll(hBox1,hBox2);
+        hBox.setFillHeight(true);
+        hBox.setHgrow(hBox1,Priority.ALWAYS);
+        hBox.setHgrow(hBox2,Priority.ALWAYS);
+        hBox.setPrefWidth(USE_COMPUTED_SIZE);
+        hBox.setPrefHeight(USE_COMPUTED_SIZE);
+        hBox.setMargin(hBox1, new Insets(5,5,5,5));
+        hBox.setMargin(hBox2, new Insets(5,5,5,5));
+
+        miTabla.getColumns().addAll(codigo,titulo,año,minDuracion,sinopsis,genero,actores,director,poster);
+
+        this.setCenter(miTabla);
+        this.setMargin(miTabla, new Insets(0,5,0,5));
+        this.setBottom(hBox);
+        this.setTop(busqPelisTextField);
+        this.setMargin(busqPelisTextField, new Insets(5,5,5,5));
     }
 
     public void setPeliculasALaTabla(){
@@ -89,17 +141,18 @@ public class Peliculas extends BorderPane{
         miTabla.setRowFactory(tv -> {
             TableRow row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2) {
+                if (event.getClickCount() == 5) {
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
                     java.util.Date parsed = null;
                     try {
-                        parsed = df.parse("01/01/0001");
+                        parsed = df.parse("12/12/2014");
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                     java.sql.Date sql = new java.sql.Date(parsed.getTime());
                     PeliculasEntity pelicula =
-                            ControladorPeliculas.crearPelicula("", sql, "", "", "", "", "");
+                            ControladorPeliculas.crearPelicula("Nueva Pelicula", sql, "00:00", "Desconocido",
+                                    "Desconocido", "Desconocidos", "Desconocido");
                     ControladorPeliculas.guardarPelicula(pelicula);
                     data.add(pelicula);
                 }
@@ -108,14 +161,14 @@ public class Peliculas extends BorderPane{
         });
 
         codigo.setCellValueFactory(
-                new PropertyValueFactory<PeliculasEntity,String>("codigo")
+                new PropertyValueFactory<PeliculasEntity, String>("codigo")
         );
         titulo.setCellValueFactory(
                 new PropertyValueFactory<PeliculasEntity,String>("titulo")
         );
         titulo.setCellFactory(TextFieldTableCell.forTableColumn());
         titulo.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         String texto;
@@ -123,40 +176,18 @@ public class Peliculas extends BorderPane{
 
                         ControladorPeliculas.modificarTitulo(event.getTableView().getItems().get(
                                 event.getTablePosition().getRow()
-                        ).getCodigo(),event.getNewValue());
+                        ).getCodigo(), event.getNewValue());
                     }
                 }
         );
         año.setCellValueFactory(
-                new PropertyValueFactory<PeliculasEntity, java.sql.Date>("anio")
+                new PropertyValueFactory<DatePickerCell, java.sql.Date>("anio")
         );
-        StringConverter<java.sql.Date> stringConverter = new StringConverter<java.sql.Date>() {
-            @Override
-            public String toString(java.sql.Date object) {
-                try {
-                    DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-                    String text = df.format(object);
-                    return text;
-                }catch (Exception e){
-                    String text = "00/00/0001";
-                    return text;
-                }
-            }
 
-            @Override
-            public java.sql.Date fromString(String string) {
-                SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-                java.util.Date parsed = null;
-                try {
-                    parsed = df.parse(string);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                java.sql.Date sql = new java.sql.Date(parsed.getTime());
-                return sql;
-            }
-        };
-        año.setCellFactory(TextFieldTableCell.forTableColumn(stringConverter));
+        año.setCellFactory(param -> {
+            DatePickerCell datePickerCell = new DatePickerCell(data);
+            return datePickerCell;
+        });
         año.setOnEditCommit(
                 new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, Date>>() {
                     @Override
@@ -172,7 +203,7 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("duracion")
         );
         minDuracion.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarDuracion(event.getTableView().getItems().get(
@@ -185,7 +216,7 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("sinopsis")
         );
         sinopsis.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarSinopsis(event.getTableView().getItems().get(
@@ -198,7 +229,7 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("genero")
         );
         genero.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarGenero(event.getTableView().getItems().get(
@@ -211,12 +242,11 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("actores")
         );
         actores.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarActores(event.getTableView().getItems().get(
-                                event.getTablePosition().getRow()
-                        ).getCodigo(), event.getNewValue());
+                                event.getTablePosition().getRow()).getCodigo(), event.getNewValue());
                     }
                 }
         );
@@ -224,7 +254,7 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("director")
         );
         director.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>(){
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
                         ControladorPeliculas.modificarDirector(event.getTableView().getItems().get(
@@ -233,15 +263,75 @@ public class Peliculas extends BorderPane{
                     }
                 }
         );
+        poster.setCellFactory(
+                new PropertyValueFactory<PeliculasEntity, String>("poster")
+        );
+        poster.setCellFactory(param -> {
+            ButtonCell buttonCell = new ButtonCell(data);
+            return buttonCell;
+        });
 
         miTabla.setItems(data);
 
     }
 
-    public void setTextFieldsYBoton(){
-
+    public void setPropiedadesDeBotones(){
+        nuevoButton.setOnMouseClicked(event -> {
+            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            java.util.Date parsed = null;
+            try {
+                parsed = df.parse("01/01/0001");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            java.sql.Date sql = new java.sql.Date(parsed.getTime());
+            PeliculasEntity pelicula =
+                    ControladorPeliculas.crearPelicula("", sql, "", "", "", "", "");
+            ControladorPeliculas.guardarPelicula(pelicula);
+            data.add(pelicula);
+        });
+        eliminarButton.setOnMouseClicked(event -> {
+            PeliculasEntity pelicula = miTabla.getSelectionModel().getSelectedItem();
+            data.remove(pelicula);
+            miTabla.setItems(data);
+            controladorPeliculas.eliminarPelicula(pelicula.getCodigo());
+        });
     }
 
+    private void setPropiedadesDeBusqueda(){
+        busqPelisTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            buscarPeliculas(oldValue, newValue);
+        });
+    }
 
+    public void buscarPeliculas(String oldVal, String newVal){
+        if (oldVal != null && (newVal.length() < oldVal.length())) {
+            miTabla.setItems(data);
+        }
+        String[] parts = newVal.toUpperCase().split(" ");
+        ObservableList<PeliculasEntity> subentries = FXCollections.observableArrayList();
+        for (PeliculasEntity entry : miTabla.getItems()) {
+            boolean match = true;
+            String titulo = entry.getTitulo();
+            String sinopsis = entry.getSinopsis();
+            String genero = entry.getGenero();
+            String actores = entry.getActores();
+            String director = entry.getDirector();
+            for ( String part: parts ) {
+                if ( (!titulo.toUpperCase().contains(part)) &&
+                        (!sinopsis.toUpperCase().contains(part)) &&
+                        (!genero.toUpperCase().contains(part)) &&
+                        (!actores.toUpperCase().contains(part)) &&
+                        (!director.toUpperCase().contains(part))) {
+                    match = false;
+                    break;
+                }
+            }
+            if ( match ) {
+                subentries.add(entry);
+            }
+        }
+        miTabla.setItems(subentries);
+    }
     
 }

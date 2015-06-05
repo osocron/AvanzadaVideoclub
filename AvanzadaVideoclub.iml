@@ -21,8 +21,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="JPA 1.0-JPA 1.0" level="project" />
     <orderEntry type="library" name="JPA 2.0-JPA 2.0" level="project" />
+    <orderEntry type="library" name="commons-logging-1.1.1" level="project" />
     <orderEntry type="library" name="eclipselink" level="project" />
-    <orderEntry type="library" name="javax.persistence_2.1.0.v201304241213" level="project" />
+    <orderEntry type="library" name="javax.persistence" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.35-bin" level="project" />
   </component>
 </module>

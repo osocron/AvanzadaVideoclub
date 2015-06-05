@@ -6,6 +6,13 @@
 package avanzadavideoclub;
 
 import java.awt.Window;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 
 import controlador.ConexionBD;
 import javafx.application.Application;
@@ -102,7 +109,9 @@ public class AvanzadaVideoclub extends Application{
                  children(new Text("Tus datos son correctos"), new Button("Ok.")).
                 alignment(Pos.CENTER).padding(new Insets(5)).build()));
                 dialogStage.show();
+               primaryStage.close();
              //
+               dialogStage.close();
                Stage stage =  new  Stage (); 
                stage.setTitle("Nuestro VideoClub");
                VentanaPrincipal root = new VentanaPrincipal();
@@ -132,11 +141,8 @@ public class AvanzadaVideoclub extends Application{
        primaryStage.setScene(scene);
        
        primaryStage.show();
-       
-       
-       
+
     }
-    
 
 
     public static void main(String[] args) {
