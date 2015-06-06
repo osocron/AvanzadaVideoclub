@@ -14,9 +14,9 @@ import java.util.List;
 public class ControladorRPeliculaCopia {
 
     public static List<RPeliculaCopiaEntity> getCopiasDePeliculas(){
-        List<RPeliculaCopiaEntity> listaClientes = ConexionBD.getEm().createQuery("SELECT c FROM RPeliculaCopiaEntity c")
+        List<RPeliculaCopiaEntity> listaCopias = ConexionBD.getEm().createQuery("SELECT c FROM RPeliculaCopiaEntity c")
                 .getResultList();
-        return listaClientes;
+        return listaCopias;
     }
 
     public static void guardarCopiaDePelicula(RPeliculaCopiaEntity rPeliculaCopiaEntity){

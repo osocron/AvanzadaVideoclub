@@ -56,7 +56,7 @@ public class Clientes extends BorderPane{
     public void ComponentesCliente(){
         miTabla = new TableView();
         busqClientesTextField = new TextField();
-        busqClientesTextField.setPromptText("Buca aquí la pelicula que desees consultar");
+        busqClientesTextField.setPromptText("Buca aquí el cliente que desees consultar");
         miTabla.setEditable(true);
         nuevoButton = new Button("Agregar Cliente");
         eliminarButton = new Button("Eliminar");

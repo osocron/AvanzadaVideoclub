@@ -226,8 +226,8 @@ public class Peliculas extends BorderPane{
                 new PropertyValueFactory<PeliculasEntity, String>("poster")
         );
         poster.setCellFactory(param -> {
-            ButtonCell buttonCell = new ButtonCell(data);
-            return buttonCell;
+            ButtonCellPoster buttonCellPoster = new ButtonCellPoster(data);
+            return buttonCellPoster;
         });
 
         miTabla.setItems(data);

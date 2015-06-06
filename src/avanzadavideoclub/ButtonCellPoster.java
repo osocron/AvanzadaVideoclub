@@ -27,12 +27,12 @@ import java.util.List;
  * Created by Noe on 05/06/15.
  * Integracion de Google search
  */
-public class ButtonCell extends TableCell<PeliculasEntity, String> {
+public class ButtonCellPoster extends TableCell<PeliculasEntity, String> {
 
     final Button cellButton = new Button("Ver Poster");
     private ObservableList<PeliculasEntity> datosDePeliculas;
 
-    ButtonCell(ObservableList<PeliculasEntity> listaPeliculas){
+    ButtonCellPoster(ObservableList<PeliculasEntity> listaPeliculas){
         super();
 
         this.datosDePeliculas = listaPeliculas;
