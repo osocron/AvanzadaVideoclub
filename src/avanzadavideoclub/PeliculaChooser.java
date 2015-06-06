@@ -1,0 +1,98 @@
+package avanzadavideoclub;
+
+import controlador.ControladorPeliculas;
+import entidades.PeliculasEntity;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+
+import java.util.List;
+
+/**
+ * Created by osocron on 6/06/15.
+ */
+public class PeliculaChooser extends BorderPane{
+
+    private TextField searchTextField;
+    private ListView<PeliculasEntity> listView;
+    private Button botonAgregar;
+    private HBox hBox;
+
+    private Prestamo padre;
+    private ObservableList<PeliculasEntity> data = FXCollections.observableArrayList();
+
+    public  PeliculaChooser(Prestamo padre){
+        this.padre = padre;
+        prepararComponentes();
+        createCustomCells();
+        setPropiedadesDeBotones();
+    }
+
+    private void prepararComponentes() {
+        List<PeliculasEntity> listaPeliculas = ControladorPeliculas.getPeliculas();
+        data.addAll(listaPeliculas);
+        searchTextField = new TextField();
+        searchTextField.setPromptText("Busca aquí la pelicula que quieres encontrar");
+        botonAgregar = new Button("Agregar");
+        listView = new ListView<>();
+        listView.setItems(data);
+
+        hBox = new HBox();
+        hBox.getChildren().add(botonAgregar);
+        hBox.setFillHeight(true);
+        hBox.setHgrow(botonAgregar, Priority.ALWAYS);
+        hBox.setPrefWidth(USE_COMPUTED_SIZE);
+        hBox.setPrefHeight(USE_COMPUTED_SIZE);
+        hBox.setMargin(botonAgregar, new Insets(5,5,5,5));
+        hBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+
+        this.setTop(searchTextField);
+        this.setMargin(searchTextField, new Insets(5,5,5,5));
+        this.setCenter(listView);
+        this.setMargin(listView, new Insets(0,5,0,5));
+        this.setBottom(hBox);
+    }
+
+    private void createCustomCells() {
+        listView.setCellFactory(param -> {
+            ListCell<PeliculasEntity> cell = (ListCell<PeliculasEntity>) getCellWithUpdateItemOverriden();
+            return cell;
+        });
+    }
+
+    /*
+    *Método que devuelve una celda modificada para que despliege la descripción del producto que
+     *contiene por medio del método setText(). También se asegura de que si la celda esta vacía
+     * no despliege información alguna y que solo despliege la información del producto si el objeto
+     * producto que contiene no es nulo.
+    */
+    private Cell<PeliculasEntity> getCellWithUpdateItemOverriden() {
+        return new ListCell<PeliculasEntity>() {
+            @Override
+            protected void updateItem(PeliculasEntity pelicula, boolean bool) {
+                super.updateItem(pelicula, bool);
+                if (bool) {
+                    setText(null);
+                    setGraphic(null);
+                } else if (pelicula != null) {
+                    setText(pelicula.getTitulo());
+                }
+            }
+        };
+    }
+
+    private void setPropiedadesDeBotones(){
+        botonAgregar.setOnAction(event -> {
+            padre.setPeliculaSeleccionada(listView.getSelectionModel().getSelectedItem());
+            padre.agregarCopiaDePelicula();
+            botonAgregar.getScene().getWindow().hide();
+        });
+    }
+}

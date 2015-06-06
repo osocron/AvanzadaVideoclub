@@ -8,11 +8,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 
 import java.sql.Date;
 import java.util.List;
@@ -45,7 +47,8 @@ public class Prestamo extends BorderPane {
     private HBox hBox;
 
     private ObservableList<RPeliculaCopiaEntity> data = FXCollections.observableArrayList();
-
+    private PeliculasEntity peliculaSeleccionada;
+    private ClientesEntity clienteSeleccionado;
 
     public void setComponentesCopiasPelicula(){
         miTabla = new TableView();
@@ -155,10 +158,7 @@ public class Prestamo extends BorderPane {
 
     public void setPropiedadesDeBotones(){
         nuevoButton.setOnMouseClicked(event -> {
-            /*RPeliculaCopiaEntity copiaDePelicula = ControladorRPeliculaCopia.crearCopiaPelicula(0,null,null,null,null);
-            ControladorRPeliculaCopia.guardarCopiaDePelicula(copiaDePelicula);
-            data.add(copiaDePelicula);
-            miTabla.setItems(data);*/
+            seleccionarPelicula();
         });
         eliminarButton.setOnMouseClicked(event -> {
             RPeliculaCopiaEntity copiaDePelicula = miTabla.getSelectionModel().getSelectedItem();
@@ -169,7 +169,34 @@ public class Prestamo extends BorderPane {
     }
 
     private void seleccionarPelicula(){
-
+        Stage stage = new Stage();
+        stage.setTitle("Nuestras Peliculas");
+        PeliculaChooser root = new PeliculaChooser(this);
+        stage.setScene(new Scene(root,600,400));
+        stage.show();
     }
 
+    public void seleccionarCliente(){
+        Stage stage = new Stage();
+        stage.setTitle("Nuestros Clientes");
+        ClienteChooser root = new ClienteChooser(this);
+        stage.setScene(new Scene(root,600,400));
+        stage.show();
+    }
+
+    public void setPeliculaSeleccionada(PeliculasEntity peliculaSeleccionada){
+        this.peliculaSeleccionada = peliculaSeleccionada;
+    }
+
+    public void setClienteSeleccionado(ClientesEntity clienteSeleccionado) {
+        this.clienteSeleccionado = clienteSeleccionado;
+    }
+
+    public void agregarCopiaDePelicula() {
+        RPeliculaCopiaEntity copiaDePelicula = ControladorRPeliculaCopia.
+                crearCopiaPelicula(0,null,null,null,peliculaSeleccionada);
+        ControladorRPeliculaCopia.guardarCopiaDePelicula(copiaDePelicula);
+        data.add(copiaDePelicula);
+        miTabla.setItems(data);
+    }
 }
