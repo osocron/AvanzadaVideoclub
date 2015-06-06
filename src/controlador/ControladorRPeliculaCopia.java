@@ -47,10 +47,18 @@ public class ControladorRPeliculaCopia {
     }
 
     public static void modificarNombre(int id, int rentada){
-        RPeliculaCopiaEntity pelicula = getCopiaDePeliculaPorCodigo(id);
+        RPeliculaCopiaEntity copiaPelicula = getCopiaDePeliculaPorCodigo(id);
         EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
         entityTransaction.begin();
-        pelicula.setRentada(rentada);
+        copiaPelicula.setRentada(rentada);
+        entityTransaction.commit();
+    }
+
+    public static void modificarCliente(int id, ClientesEntity cliente){
+        RPeliculaCopiaEntity copiaPelicula = getCopiaDePeliculaPorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        copiaPelicula.setClientesByNumCliente(cliente);
         entityTransaction.commit();
     }
 

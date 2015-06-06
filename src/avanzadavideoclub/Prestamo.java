@@ -122,7 +122,7 @@ public class Prestamo extends BorderPane {
                 new PropertyValueFactory<CheckBoxCellRentar, Integer>("rentada")
         );
         rentada.setCellFactory(param -> {
-            CheckBoxCellRentar checkBoxCellRentar = new CheckBoxCellRentar(data);
+            CheckBoxCellRentar checkBoxCellRentar = new CheckBoxCellRentar(data,this);
             return checkBoxCellRentar;
         });
         cliente.setCellValueFactory(
@@ -190,13 +190,22 @@ public class Prestamo extends BorderPane {
 
     public void setClienteSeleccionado(ClientesEntity clienteSeleccionado) {
         this.clienteSeleccionado = clienteSeleccionado;
+        ControladorRPeliculaCopia.modificarCliente(miTabla.getSelectionModel().getSelectedIndex(), clienteSeleccionado);
     }
 
     public void agregarCopiaDePelicula() {
         RPeliculaCopiaEntity copiaDePelicula = ControladorRPeliculaCopia.
-                crearCopiaPelicula(0,null,null,null,peliculaSeleccionada);
+                crearCopiaPelicula(0, null, null, null, peliculaSeleccionada);
         ControladorRPeliculaCopia.guardarCopiaDePelicula(copiaDePelicula);
         data.add(copiaDePelicula);
         miTabla.setItems(data);
+    }
+
+    public TableView<RPeliculaCopiaEntity> getMiTabla() {
+        return miTabla;
+    }
+
+    public void setMiTabla(TableView<RPeliculaCopiaEntity> miTabla) {
+        this.miTabla = miTabla;
     }
 }

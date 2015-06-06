@@ -12,11 +12,13 @@ import javafx.scene.control.TableCell;
  */
 public class CheckBoxCellRentar <S, T> extends TableCell<RPeliculaCopiaEntity, Integer> {
     private CheckBox checkBox;
+    private Prestamo padre;
 
     private ObservableList<RPeliculaCopiaEntity> listaDeCopiasDePeliculas;
-    public CheckBoxCellRentar(ObservableList<RPeliculaCopiaEntity> listaDeCopiasDePeliculas){
+    public CheckBoxCellRentar(ObservableList<RPeliculaCopiaEntity> listaDeCopiasDePeliculas, Prestamo padre){
         super();
         this.listaDeCopiasDePeliculas = listaDeCopiasDePeliculas;
+        this.padre = padre;
         if(checkBox == null){
             createCheckBox();
         }
@@ -63,6 +65,7 @@ public class CheckBoxCellRentar <S, T> extends TableCell<RPeliculaCopiaEntity, I
         checkBox.setOnAction(t -> {
             if(checkBox.isSelected()){
                 isSelected[0] = 1;
+                padre.seleccionarCliente();
             }else{
                 isSelected[0] = 0;
             }

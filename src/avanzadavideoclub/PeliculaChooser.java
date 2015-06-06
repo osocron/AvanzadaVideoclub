@@ -4,8 +4,6 @@ import controlador.ControladorPeliculas;
 import entidades.PeliculasEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.*;
@@ -33,6 +31,7 @@ public class PeliculaChooser extends BorderPane{
         prepararComponentes();
         createCustomCells();
         setPropiedadesDeBotones();
+        addListenerToSearchTextField();
     }
 
     private void prepararComponentes() {
@@ -94,5 +93,32 @@ public class PeliculaChooser extends BorderPane{
             padre.agregarCopiaDePelicula();
             botonAgregar.getScene().getWindow().hide();
         });
+    }
+
+    private void addListenerToSearchTextField() {
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchProducts(oldValue, newValue);
+        });
+    }
+
+    private ObservableList<PeliculasEntity> searchProducts(String oldVal, String newVal) {
+        if (oldVal != null && (newVal.length() < oldVal.length()))
+            listView.setItems(data);
+        String[] parts = newVal.toUpperCase().split(" ");
+        ObservableList<PeliculasEntity> subentries = FXCollections.observableArrayList();
+        for (PeliculasEntity entry : listView.getItems()) {
+            boolean match = true;
+            String entryText = entry.getTitulo();
+            for (String part : parts) {
+                if (!entryText.toUpperCase().contains(part)) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match)
+                subentries.add(entry);
+        }
+        listView.setItems(subentries);
+        return subentries;
     }
 }
