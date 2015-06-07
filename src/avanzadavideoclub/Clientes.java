@@ -176,18 +176,9 @@ public class Clientes extends BorderPane{
         email.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ClientesEntity, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<ClientesEntity, String> event) {
-                String texto = event.getNewValue();
-                boolean isTextOnly;
-                Pattern pattern = Pattern.compile("^[A-Z0-9_%+-]+@");
-                Matcher matcher = pattern.matcher(texto);
-                isTextOnly = matcher.matches();
-                if(!isTextOnly){
-                    JOptionPane.showMessageDialog(null,"Funciona","Titulo",JOptionPane.OK_OPTION);
-                }else {
-                    ControladorClientes.modificarEmail(event.getTableView().getItems().get(
-                            event.getTablePosition().getRow()
-                    ).getNumCliente(), event.getNewValue());
-                }
+                ControladorClientes.modificarEmail(event.getTableView().getItems().get(
+                        event.getTablePosition().getRow()
+                ).getNumCliente(), event.getNewValue());
             }
         });
         ifeOrc.setCellValueFactory(
@@ -197,18 +188,9 @@ public class Clientes extends BorderPane{
         ifeOrc.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ClientesEntity, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<ClientesEntity, String> event) {
-                String texto1 = event.getNewValue();
-                boolean isTextOnly;
-                Pattern pattern = Pattern.compile("^[\\p{L} -]+$");
-                Matcher matcher = pattern.matcher(texto1);
-                isTextOnly = matcher.matches();
-                if(!isTextOnly){
-                    JOptionPane.showMessageDialog(null,"Funciona","Titulo",JOptionPane.OK_OPTION);
-                }else {
-                    ControladorClientes.modificarIfeOrc(event.getTableView().getItems().get(
-                            event.getTablePosition().getRow()
-                    ).getNumCliente(), Long.parseLong(event.getNewValue()));
-                }
+                ControladorClientes.modificarIfeOrc(event.getTableView().getItems().get(
+                        event.getTablePosition().getRow()
+                ).getNumCliente(), Long.parseLong(event.getNewValue()));
             }
         });
 

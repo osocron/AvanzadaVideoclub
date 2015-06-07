@@ -22,31 +22,23 @@ public class DatePickerCell <S, T> extends TableCell<PeliculasEntity, Date> {
     private ObservableList<PeliculasEntity> datosDePeliculas;
 
     public DatePickerCell(ObservableList<PeliculasEntity> listaPeliculas) {
-
         super();
-
         this.datosDePeliculas = listaPeliculas;
-
         if (datePicker == null) {
             createDatePicker();
         }
         setGraphic(datePicker);
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-
         Platform.runLater(() -> datePicker.requestFocus());
     }
 
     @Override
     public void updateItem(Date item, boolean empty) {
-
         super.updateItem(item, empty);
-
         SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
-
         if (null == this.datePicker) {
             System.out.println("datePicker is NULL");
         }
-
         if (empty) {
             setText(null);
             setGraphic(null);
@@ -90,7 +82,6 @@ public class DatePickerCell <S, T> extends TableCell<PeliculasEntity, Date> {
         datePicker.setOnAction(t -> {
             LocalDate date = datePicker.getValue();
             int index = getIndex();
-
             SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth());

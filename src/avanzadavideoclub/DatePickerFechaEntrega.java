@@ -38,15 +38,11 @@ public class DatePickerFechaEntrega <S, T> extends TableCell<RPeliculaCopiaEntit
 
     @Override
     public void updateItem(Date item, boolean empty) {
-
         super.updateItem(item, empty);
-
         SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
-
         if (null == this.datePicker) {
             System.out.println("datePicker is NULL");
         }
-
         if (empty) {
             setText(null);
             setGraphic(null);
@@ -61,9 +57,6 @@ public class DatePickerFechaEntrega <S, T> extends TableCell<RPeliculaCopiaEntit
                     setGraphic(this.datePicker);
                     setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 }
-                this.datePicker.setDisable(false);
-            }else{
-                this.datePicker.setDisable(true);
             }
         }
     }

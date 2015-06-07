@@ -1,5 +1,6 @@
 package avanzadavideoclub;
 
+import controlador.ControladorRPeliculaCopia;
 import entidades.RPeliculaCopiaEntity;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -50,27 +51,21 @@ public class CheckBoxCellRentar <S, T> extends TableCell<RPeliculaCopiaEntity, I
 
     private void createCheckBox() {
         this.checkBox = new CheckBox();
-        int index = getIndex();
-        final int[] isSelected = new int[1];
-        if(index == -1){
-            index = 0;
-        }
-        if((getListaDeCopiasDePeliculas().get(index).getRentada() == 0)
-                && getListaDeCopiasDePeliculas().get(index) != null){
-            checkBox.setSelected(false);
-        }else if (getListaDeCopiasDePeliculas().get(index) != null){
-            checkBox.setSelected(true);
-        }
-        final int finalIndex = index;
+        this.checkBox.setSelected(false);
+
         checkBox.setOnAction(t -> {
+            int isSelected;
+            int index = getIndex();
             if(checkBox.isSelected()){
-                isSelected[0] = 1;
+                isSelected = 1;
+                padre.getMiTabla().getSelectionModel().select(index);
                 padre.seleccionarCliente();
             }else{
-                isSelected[0] = 0;
+                isSelected = 0;
             }
             if(getListaDeCopiasDePeliculas() != null){
-                getListaDeCopiasDePeliculas().get(finalIndex).setRentada(isSelected[0]);
+                getListaDeCopiasDePeliculas().get(index).setRentada(isSelected);
+                ControladorRPeliculaCopia.modificarEsRentada(index,isSelected);
             }
         });
     }

@@ -1,5 +1,7 @@
 package entidades;
 
+import javafx.beans.property.SimpleObjectProperty;
+
 import javax.persistence.*;
 
 /**

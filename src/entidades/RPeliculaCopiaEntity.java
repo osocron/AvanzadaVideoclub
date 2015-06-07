@@ -1,5 +1,8 @@
 package entidades;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -99,4 +102,5 @@ public class RPeliculaCopiaEntity {
     public void setPeliculasByCodigoPelicula(PeliculasEntity peliculasByCodigoPelicula) {
         this.peliculasByCodigoPelicula = peliculasByCodigoPelicula;
     }
+
 }

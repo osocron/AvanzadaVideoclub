@@ -4,6 +4,7 @@ import controlador.ControladorRPeliculaCopia;
 import entidades.ClientesEntity;
 import entidades.PeliculasEntity;
 import entidades.RPeliculaCopiaEntity;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -190,7 +191,8 @@ public class Prestamo extends BorderPane {
 
     public void setClienteSeleccionado(ClientesEntity clienteSeleccionado) {
         this.clienteSeleccionado = clienteSeleccionado;
-        ControladorRPeliculaCopia.modificarCliente(miTabla.getSelectionModel().getSelectedIndex(), clienteSeleccionado);
+        int id = miTabla.getSelectionModel().getSelectedItem().getNumCopia();
+        ControladorRPeliculaCopia.modificarCliente(id, clienteSeleccionado);
     }
 
     public void agregarCopiaDePelicula() {
@@ -208,4 +210,5 @@ public class Prestamo extends BorderPane {
     public void setMiTabla(TableView<RPeliculaCopiaEntity> miTabla) {
         this.miTabla = miTabla;
     }
+
 }

@@ -62,6 +62,14 @@ public class ControladorRPeliculaCopia {
         entityTransaction.commit();
     }
 
+    public static void modificarEsRentada(int id, int valor){
+        RPeliculaCopiaEntity copiaPelicula = getCopiaDePeliculaPorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        copiaPelicula.setRentada(valor);
+        entityTransaction.commit();
+    }
+
     public static void eliminarCopiaDePelicula(int codigo){
         RPeliculaCopiaEntity copiaDePelicula = getCopiaDePeliculaPorCodigo(codigo);
         if(copiaDePelicula != null){

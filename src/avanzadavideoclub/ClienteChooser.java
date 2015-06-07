@@ -96,11 +96,11 @@ public class ClienteChooser extends BorderPane{
 
     private void addListenerToSearchTextField() {
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            searchProducts(oldValue, newValue);
+            searchClientes(oldValue, newValue);
         });
     }
 
-    private ObservableList<ClientesEntity> searchProducts(String oldVal, String newVal) {
+    private ObservableList<ClientesEntity> searchClientes(String oldVal, String newVal) {
         if (oldVal != null && (newVal.length() < oldVal.length()))
             listView.setItems(data);
         String[] parts = newVal.toUpperCase().split(" ");

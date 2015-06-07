@@ -22,17 +22,13 @@ public class DatePickerFechaRenta <S, T> extends TableCell<RPeliculaCopiaEntity,
     private ObservableList<RPeliculaCopiaEntity> datosDeCopiasDePeliculas;
 
     public DatePickerFechaRenta(ObservableList<RPeliculaCopiaEntity> listaDeCopiasDePeliculas) {
-
         super();
-
         this.datosDeCopiasDePeliculas = listaDeCopiasDePeliculas;
-
         if (datePicker == null) {
             createDatePicker();
         }
         setGraphic(datePicker);
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-
         Platform.runLater(() -> datePicker.requestFocus());
     }
 
@@ -56,9 +52,6 @@ public class DatePickerFechaRenta <S, T> extends TableCell<RPeliculaCopiaEntity,
                     setGraphic(this.datePicker);
                     setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 }
-                this.datePicker.setDisable(false);
-            }else{
-                this.datePicker.setDisable(true);
             }
         }
     }

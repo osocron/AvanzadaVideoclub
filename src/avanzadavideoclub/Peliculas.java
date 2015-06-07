@@ -138,26 +138,9 @@ public class Peliculas extends BorderPane{
                 new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, String>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<PeliculasEntity, String> event) {
-                        String texto= event.getNewValue();
-                        boolean isTextOnly;
-                        Pattern pattern = Pattern.compile("^[\\p{L} -]+$");
-                        Matcher matcher = pattern.matcher(texto);
-                        isTextOnly = matcher.matches();
-                        if(isTextOnly){
-                            JOptionPane.showMessageDialog(null,"Debe de Funcionar");
-                        }
-
-                        /*
-                        if(!InputValidator.textIsLatinButNoPunctuation("Validacion de datos")){
-                            JOptionPane.showMessageDialog(null,"Debes llenar Datos Correctamente");
-                        }
-                        */
-
-                        else {
-                            ControladorPeliculas.modificarTitulo(event.getTableView().getItems().get(
-                                    event.getTablePosition().getRow()
-                            ).getCodigo(), event.getNewValue());
-                        }
+                        ControladorPeliculas.modificarTitulo(event.getTableView().getItems().get(
+                                event.getTablePosition().getRow()
+                        ).getCodigo(), event.getNewValue());
                     }
                 }
         );
