@@ -57,8 +57,7 @@ public class DatePickerFechaRenta <S, T> extends TableCell<RPeliculaCopiaEntity,
     }
 
     private void setDatepikerDate(String dateAsStr) {
-
-        LocalDate ld = null;
+        LocalDate ld;
         int jour, mois, annee;
 
         jour = mois = annee = 0;

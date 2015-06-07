@@ -62,8 +62,7 @@ public class DatePickerFechaEntrega <S, T> extends TableCell<RPeliculaCopiaEntit
     }
 
     private void setDatepikerDate(String dateAsStr) {
-
-        LocalDate ld = null;
+        LocalDate ld;
         int jour, mois, annee;
 
         jour = mois = annee = 0;

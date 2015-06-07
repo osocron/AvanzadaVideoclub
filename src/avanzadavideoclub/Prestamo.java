@@ -4,9 +4,9 @@ import controlador.ControladorRPeliculaCopia;
 import entidades.ClientesEntity;
 import entidades.PeliculasEntity;
 import entidades.RPeliculaCopiaEntity;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Scene;
@@ -108,16 +108,9 @@ public class Prestamo extends BorderPane {
         pelicula.setCellValueFactory(
                 new PropertyValueFactory<RPeliculaCopiaEntity, String>("peliculasByCodigoPelicula")
         );
-        pelicula.setCellFactory(column -> new TableCell<RPeliculaCopiaEntity, PeliculasEntity>(){
-          @Override
-        protected void updateItem(PeliculasEntity item, boolean empty){
-              if (item == null || empty) {
-                  setText(null);
-                  setStyle("");
-              } else {
-                  setText(item.getTitulo());
-              }
-          }
+        pelicula.setCellFactory(param -> {
+            PeliculaCellChooser cell =new PeliculaCellChooser(data,this);
+            return cell;
         });
         rentada.setCellValueFactory(
                 new PropertyValueFactory<CheckBoxCellRentar, Integer>("rentada")
@@ -129,16 +122,9 @@ public class Prestamo extends BorderPane {
         cliente.setCellValueFactory(
                 new PropertyValueFactory<RPeliculaCopiaEntity, String>("clientesByNumCliente")
         );
-        cliente.setCellFactory(column -> new TableCell<RPeliculaCopiaEntity, ClientesEntity>(){
-            @Override
-            protected void updateItem(ClientesEntity item, boolean empty){
-                if (item == null || empty) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    setText(item.getNombres());
-                }
-            }
+        cliente.setCellFactory(param1 -> {
+            ClienteCellChooser cell = new ClienteCellChooser(data,this);
+            return cell;
         });
         fechaRenta.setCellValueFactory(
                 new PropertyValueFactory<DatePickerFechaRenta, Date>("fechaRenta")
@@ -147,6 +133,16 @@ public class Prestamo extends BorderPane {
             DatePickerFechaRenta datePickerFechaRenta = new DatePickerFechaRenta(data);
             return datePickerFechaRenta;
         });
+        fechaRenta.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, Date>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<PeliculasEntity, Date> event) {
+                        ControladorRPeliculaCopia.modificarFechaRenta(event.getTableView().getItems().get(
+                                event.getTablePosition().getRow()
+                        ).getCodigo(), event.getNewValue());
+                    }
+                }
+        );
         fechaEntrega.setCellValueFactory(
                 new PropertyValueFactory<DatePickerFechaEntrega, Date>("fechaEntrega")
         );
@@ -154,16 +150,27 @@ public class Prestamo extends BorderPane {
             DatePickerFechaEntrega datePickerFechaEntrega = new DatePickerFechaEntrega(data);
             return datePickerFechaEntrega;
         });
+        fechaEntrega.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<PeliculasEntity, Date>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<PeliculasEntity, Date> event) {
+                        ControladorRPeliculaCopia.modificarFechaEntrega(event.getTableView().getItems().get(
+                                event.getTablePosition().getRow()
+                        ).getCodigo(), event.getNewValue());
+                    }
+                }
+        );
         miTabla.setItems(data);
     }
 
     public void setPropiedadesDeBotones(){
         nuevoButton.setOnMouseClicked(event -> {
             seleccionarPelicula();
+            agregarCopiaDePelicula();
         });
         eliminarButton.setOnMouseClicked(event -> {
             RPeliculaCopiaEntity copiaDePelicula = miTabla.getSelectionModel().getSelectedItem();
-            data.remove(pelicula);
+            data.remove(copiaDePelicula);
             miTabla.setItems(data);
             ControladorRPeliculaCopia.eliminarCopiaDePelicula(copiaDePelicula.getNumCopia());
         });
@@ -177,22 +184,20 @@ public class Prestamo extends BorderPane {
         stage.show();
     }
 
-    public void seleccionarCliente(){
-        Stage stage = new Stage();
-        stage.setTitle("Nuestros Clientes");
-        ClienteChooser root = new ClienteChooser(this);
-        stage.setScene(new Scene(root,600,400));
-        stage.show();
-    }
-
     public void setPeliculaSeleccionada(PeliculasEntity peliculaSeleccionada){
         this.peliculaSeleccionada = peliculaSeleccionada;
     }
 
-    public void setClienteSeleccionado(ClientesEntity clienteSeleccionado) {
+    public void modificarClienteSeleccionado(ClientesEntity clienteSeleccionado) {
         this.clienteSeleccionado = clienteSeleccionado;
         int id = miTabla.getSelectionModel().getSelectedItem().getNumCopia();
         ControladorRPeliculaCopia.modificarCliente(id, clienteSeleccionado);
+    }
+
+    public void modificarPeliculaSeleccionada(PeliculasEntity peliculaSeleccionada) {
+        this.peliculaSeleccionada = peliculaSeleccionada;
+        int id = miTabla.getSelectionModel().getSelectedItem().getNumCopia();
+        ControladorRPeliculaCopia.modificarPeliculaSeleccionada(id, peliculaSeleccionada);
     }
 
     public void agregarCopiaDePelicula() {
@@ -210,5 +215,4 @@ public class Prestamo extends BorderPane {
     public void setMiTabla(TableView<RPeliculaCopiaEntity> miTabla) {
         this.miTabla = miTabla;
     }
-
 }

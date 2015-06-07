@@ -43,10 +43,8 @@ public class DatePickerCell <S, T> extends TableCell<PeliculasEntity, Date> {
             setText(null);
             setGraphic(null);
         } else {
-
             if (isEditing()) {
                 setContentDisplay(ContentDisplay.TEXT_ONLY);
-
             } else {
                 setDatepikerDate(smp.format(item));
                 setText(smp.format(item));
@@ -116,16 +114,5 @@ public class DatePickerCell <S, T> extends TableCell<PeliculasEntity, Date> {
         return datosDePeliculas;
     }
 
-    public void setPeliculaData(ObservableList<PeliculasEntity> pelicaulaData) {
-        this.datosDePeliculas = pelicaulaData;
-    }
-
-    public DatePicker getDatePicker() {
-        return datePicker;
-    }
-
-    public void setDatePicker(DatePicker datePicker) {
-        this.datePicker = datePicker;
-    }
 
 }

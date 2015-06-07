@@ -46,13 +46,6 @@ public class ControladorRPeliculaCopia {
         return copiaPelicula;
     }
 
-    public static void modificarNombre(int id, int rentada){
-        RPeliculaCopiaEntity copiaPelicula = getCopiaDePeliculaPorCodigo(id);
-        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
-        entityTransaction.begin();
-        copiaPelicula.setRentada(rentada);
-        entityTransaction.commit();
-    }
 
     public static void modificarCliente(int id, ClientesEntity cliente){
         RPeliculaCopiaEntity copiaPelicula = getCopiaDePeliculaPorCodigo(id);
@@ -70,6 +63,14 @@ public class ControladorRPeliculaCopia {
         entityTransaction.commit();
     }
 
+    public static void modificarPeliculaSeleccionada(int id, PeliculasEntity peliculaSeleccionada) {
+        RPeliculaCopiaEntity copiaPelicula = getCopiaDePeliculaPorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        copiaPelicula.setPeliculasByCodigoPelicula(peliculaSeleccionada);
+        entityTransaction.commit();
+    }
+
     public static void eliminarCopiaDePelicula(int codigo){
         RPeliculaCopiaEntity copiaDePelicula = getCopiaDePeliculaPorCodigo(codigo);
         if(copiaDePelicula != null){
@@ -78,6 +79,22 @@ public class ControladorRPeliculaCopia {
             ConexionBD.getEm().remove(copiaDePelicula);
             entityTransaction.commit();
         }
+    }
+
+    public static void modificarFechaRenta(int id, Date newValue) {
+        RPeliculaCopiaEntity copiaPelicula = getCopiaDePeliculaPorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        copiaPelicula.setFechaRenta(newValue);
+        entityTransaction.commit();
+    }
+
+    public static void modificarFechaEntrega(int id, Date newValue) {
+        RPeliculaCopiaEntity copiaPelicula = getCopiaDePeliculaPorCodigo(id);
+        EntityTransaction entityTransaction = ConexionBD.getEm().getTransaction();
+        entityTransaction.begin();
+        copiaPelicula.setFechaEntrega(newValue);
+        entityTransaction.commit();
     }
 
     public static RPeliculaCopiaEntity getCopiaDePeliculaPorCodigo(int codigo){

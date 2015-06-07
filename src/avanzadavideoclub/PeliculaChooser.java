@@ -24,9 +24,19 @@ public class PeliculaChooser extends BorderPane{
     private HBox hBox;
 
     private Prestamo padre;
+    private PeliculaCellChooser peliculaCell;
     private ObservableList<PeliculasEntity> data = FXCollections.observableArrayList();
 
     public  PeliculaChooser(Prestamo padre){
+        this.padre = padre;
+        prepararComponentes();
+        createCustomCells();
+        setPropiedadesDeBotones();
+        addListenerToSearchTextField();
+    }
+
+    public  PeliculaChooser(PeliculaCellChooser peliculaCellChooser, Prestamo padre){
+        this.peliculaCell = peliculaCellChooser;
         this.padre = padre;
         prepararComponentes();
         createCustomCells();
@@ -90,8 +100,11 @@ public class PeliculaChooser extends BorderPane{
     private void setPropiedadesDeBotones(){
         botonAgregar.setOnAction(event -> {
             padre.setPeliculaSeleccionada(listView.getSelectionModel().getSelectedItem());
-            padre.agregarCopiaDePelicula();
             botonAgregar.getScene().getWindow().hide();
+            if(peliculaCell != null){
+                peliculaCell.updateItem(listView.getSelectionModel().getSelectedItem(), false);
+                padre.modificarPeliculaSeleccionada(listView.getSelectionModel().getSelectedItem());
+            }
         });
     }
 

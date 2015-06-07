@@ -24,9 +24,19 @@ public class ClienteChooser extends BorderPane{
     private HBox hBox;
 
     private Prestamo padre;
+    private ClienteCellChooser clienteCellChooser;
     private ObservableList<ClientesEntity> data = FXCollections.observableArrayList();
 
     public  ClienteChooser(Prestamo padre){
+        this.padre = padre;
+        prepararComponentes();
+        createCustomCells();
+        setPropiedadesDeBotones();
+        addListenerToSearchTextField();
+    }
+
+    public ClienteChooser(ClienteCellChooser clienteCellChooser, Prestamo padre){
+        this.clienteCellChooser = clienteCellChooser;
         this.padre = padre;
         prepararComponentes();
         createCustomCells();
@@ -89,8 +99,12 @@ public class ClienteChooser extends BorderPane{
 
     private void setPropiedadesDeBotones(){
         botonAgregar.setOnAction(event -> {
-            padre.setClienteSeleccionado(listView.getSelectionModel().getSelectedItem());
+            padre.modificarClienteSeleccionado(listView.getSelectionModel().getSelectedItem());
             botonAgregar.getScene().getWindow().hide();
+            if(clienteCellChooser != null){
+                clienteCellChooser.updateItem(listView.getSelectionModel().getSelectedItem(), false);
+                padre.modificarClienteSeleccionado(listView.getSelectionModel().getSelectedItem());
+            }
         });
     }
 

@@ -59,7 +59,6 @@ public class CheckBoxCellRentar <S, T> extends TableCell<RPeliculaCopiaEntity, I
             if(checkBox.isSelected()){
                 isSelected = 1;
                 padre.getMiTabla().getSelectionModel().select(index);
-                padre.seleccionarCliente();
             }else{
                 isSelected = 0;
             }
