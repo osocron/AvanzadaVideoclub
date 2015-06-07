@@ -99,9 +99,12 @@ public class PeliculaChooser extends BorderPane{
 
     private void setPropiedadesDeBotones(){
         botonAgregar.setOnAction(event -> {
-            padre.setPeliculaSeleccionada(listView.getSelectionModel().getSelectedItem());
-            botonAgregar.getScene().getWindow().hide();
-            if(peliculaCell != null){
+            if(peliculaCell == null) {
+                padre.setPeliculaSeleccionada(listView.getSelectionModel().getSelectedItem());
+                botonAgregar.getScene().getWindow().hide();
+                padre.agregarCopiaDePelicula();
+            }
+            else{
                 peliculaCell.updateItem(listView.getSelectionModel().getSelectedItem(), false);
                 padre.modificarPeliculaSeleccionada(listView.getSelectionModel().getSelectedItem());
             }

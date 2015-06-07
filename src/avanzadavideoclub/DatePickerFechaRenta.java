@@ -37,7 +37,7 @@ public class DatePickerFechaRenta <S, T> extends TableCell<RPeliculaCopiaEntity,
         super.updateItem(item, empty);
         SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
         if (this.datePicker == null) {
-            System.out.println("datePicker is NULL");
+            createDatePicker();
         }
         if (empty) {
             setText(null);

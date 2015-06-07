@@ -31,13 +31,14 @@ public class PeliculaCellChooser<S, T>  extends TableCell<RPeliculaCopiaEntity, 
 
     @Override
     protected void updateItem(PeliculasEntity item, boolean empty){
-        if(item == null || empty) {
+        if(empty) {
             setText(null);
-            setStyle("");
+            setGraphic(null);
         } else {
             labelPelicula.setText(item.getTitulo());
             setGraphic(labelPelicula);
             setText(item.getTitulo());
+            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
     }
 

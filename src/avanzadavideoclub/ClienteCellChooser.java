@@ -33,13 +33,16 @@ public class ClienteCellChooser<S, T>  extends TableCell<RPeliculaCopiaEntity, C
 
     @Override
     protected void updateItem(ClientesEntity item, boolean empty){
-        if(item == null || empty) {
+        if(empty) {
             setText(null);
-            setStyle("");
+            setGraphic(null);
         } else {
-            labelCliente.setText(item.getNombres());
-            setGraphic(labelCliente);
-            setText(item.getNombres());
+            if(item != null) {
+                labelCliente.setText(item.getNombres());
+                setGraphic(labelCliente);
+                setText(item.getNombres());
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            }
         }
     }
 

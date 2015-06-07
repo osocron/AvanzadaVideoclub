@@ -29,8 +29,6 @@ public class VentanaPrincipal extends BorderPane{
     //private BorderPane root;
     private Button btnClientes;
     private Button btnPeliculas;
-    private Button btnGenero;
-    private Button btnPrestamo;
     private Button btnCerrar;
     
     public VentanaPrincipal(){
@@ -44,10 +42,6 @@ public class VentanaPrincipal extends BorderPane{
         
         btnClientes = new Button("Clientes");
         btnPeliculas = new Button("Peliculas");
-        //this.setCenter(btnPeliculas);
-        btnGenero = new Button("Genero");
-        //this.setCenter(btnGenero);
-        btnPrestamo = new Button("Prestamo");
         //this.setCenter(btnPrestamo);
         btnCerrar = new Button("Cerrar");
 
@@ -77,37 +71,12 @@ public class VentanaPrincipal extends BorderPane{
             }
         }
         );
-        
-        //ESTOVA ENTRAR A LA CLASE GENERO
-        btnGenero.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent e){
-                Stage stage = new Stage();
-                stage.setTitle("Nuestros Generos");
-                Genero root = new Genero();
-                stage.setScene(new Scene(root,600,400));
-                stage.show();
-            }
-        }
-        );
 
-        btnPrestamo.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent e){
-                Stage stage = new Stage();
-                stage.setTitle("Prestamos");
-                Prestamo root = new Prestamo();
-                stage.setScene(new Scene(root,600,400));
-                stage.show();
-            }
-        });
         
-        botones.getChildren().addAll(btnClientes,btnPeliculas,btnGenero,btnPrestamo,btnCerrar);
+        botones.getChildren().addAll(btnClientes,btnPeliculas,btnCerrar);
         List<Button> listaBotones = new ArrayList<>();
         listaBotones.add(btnClientes);
         listaBotones.add(btnPeliculas);
-        listaBotones.add(btnGenero);
-        listaBotones.add(btnPrestamo);
         listaBotones.add(btnCerrar);
         listaBotones.forEach(boton -> {
             VBox.setMargin(boton, new Insets(10, 10, 10, 10));

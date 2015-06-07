@@ -166,7 +166,6 @@ public class Prestamo extends BorderPane {
     public void setPropiedadesDeBotones(){
         nuevoButton.setOnMouseClicked(event -> {
             seleccionarPelicula();
-            agregarCopiaDePelicula();
         });
         eliminarButton.setOnMouseClicked(event -> {
             RPeliculaCopiaEntity copiaDePelicula = miTabla.getSelectionModel().getSelectedItem();
@@ -202,7 +201,7 @@ public class Prestamo extends BorderPane {
 
     public void agregarCopiaDePelicula() {
         RPeliculaCopiaEntity copiaDePelicula = ControladorRPeliculaCopia.
-                crearCopiaPelicula(0, null, null, null, peliculaSeleccionada);
+                crearCopiaPelicula(0, new Date(2015,01,01), new Date(2015,01,01), null, peliculaSeleccionada);
         ControladorRPeliculaCopia.guardarCopiaDePelicula(copiaDePelicula);
         data.add(copiaDePelicula);
         miTabla.setItems(data);
